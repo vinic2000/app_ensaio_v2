@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User_types{
+  id String @default(uuid()) @id
+  name String
+  users User[]
+}
+
+model User{
+  id String @default(uuid()) @id
+  name String
+  user_type User_types @relation(fields: [user_type_id], references: [id])
+  user_type_id String
+  email String
+  password String
+  active Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime 
+}
+
+model Musical_instrument{
+  id String @default(uuid()) @id
+  name String
+  active Boolean
+  musical_instrumentOnMusical_rehearsal Musical_instrumentOnMusical_rehearsal[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime 
+}
+
+model Musical_rehearsal{
+  id String @default(uuid()) @id
+  church String
+  date DateTime
+  musical_instrumentOnMusical_rehearsal Musical_instrumentOnMusical_rehearsal[]
+  music_manager String
+  brotherhood_number Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime 
+}
+
+model Musical_instrumentOnMusical_rehearsal{
+
+  musical_rehearsal Musical_rehearsal @relation(fields: [musical_rehearsal_Id], references: [id])
+  musical_rehearsal_Id String
+
+  musical_instrument Musical_instrument @relation(fields: [musical_instrument_id], references: [id])
+  musical_instrument_id String
+
+  @@id([musical_rehearsal_Id,musical_instrument_id])
+}

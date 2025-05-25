@@ -1,0 +1,12 @@
+
+
+POST http:localhost:3000/user-types
+Content-Type: application/json
+
+{
+    "name":"Violino"
+}
+
+#####
+GET http:localhost:3000/user-types
+Content-Type: application/json
